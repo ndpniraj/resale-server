@@ -12,7 +12,9 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["./src/*"],
+      "routes/*": ["./src/routes/*"],
+      "controllers/*": ["./src/controllers/*"]
     }
   }
 }
