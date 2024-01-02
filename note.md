@@ -126,3 +126,99 @@ authRouter.post("/reset-pass");
 5. If yes the remove the old avatar.
 6. Upload new avatar and update user.
 7. Send response back.
+
+# Product
+
+The interface for products.
+
+```
+type productImage = { url: string; id: string };
+
+export interface ProductDocument extends Document {
+  owner: Schema.Types.ObjectId;
+  name: string;
+  price: number;
+  purchasingDate: Date;
+  category: string;
+  images: productImage[];
+  thumbnail: string;
+  description: string;
+}
+```
+
+## Product Routes
+
+```
+productRouter.post("/list");
+productRouter.patch("/:id");
+productRouter.delete("/:id");
+productRouter.delete("/image/:productId/:imageId");
+productRouter.get("/detail/:id");
+productRouter.get("/by-category/:category");
+productRouter.get("/latest");
+productRouter.get("/listings");
+```
+
+- `/list`
+
+1. User must be authenticated.
+2. User can upload images as well.
+3. Validate incoming data.
+4. Validate and Upload File (or Files) - note (restrict image qty).
+5. Create Product.
+6. And send the response back.
+
+- `/:id` (patch to update)
+
+1. User must be authenticated.
+2. User can upload images as well.
+3. Validate incoming data.
+4. Update normal properties.
+5. Upload and update images (restrict image qty).
+6. And send the response back.
+
+- `/:id` (delete single product)
+
+1. User must be authenticated.
+2. Validate the product id.
+3. Remove if it is made by the same user.
+4. Remove images as well.
+5. And send the response back.
+
+- `/image/:productId/:imageId` (delete only image of the product)
+
+1. User must be authenticated.
+2. Validate the product id.
+3. Remove the image from db (if it is made by the same user).
+4. Remove from cloud as well.
+5. And send the response back.
+
+- `/detail/:id` (get product details)
+
+1. User must be authenticated (optional).
+2. Validate the product id.
+3. Find Product by the id.
+4. Format data.
+5. And send the response back.
+
+- `/by-category/:category` (multiple products by category)
+
+1. User must be authenticated (optional).
+2. Validate the category.
+3. Find products by category (apply pagination if needed).
+4. Format data.
+5. And send the response back.
+
+- `/latest` (multiple products sorted with created date)
+
+1. User must be authenticated (optional).
+2. Find all the products with sorted date (apply limit/pagination if needed).
+3. Format data.
+4. And send the response back.
+
+- `/listings` (products created by the user)
+
+1. User must be authenticated.
+2. Find all the products created by this user (apply pagination if needed).
+3. Format data.
+4. And send the response back.
