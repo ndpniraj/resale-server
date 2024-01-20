@@ -149,6 +149,7 @@ export const signIn: RequestHandler = async (req, res) => {
       email: user.email,
       name: user.name,
       verified: user.verified,
+      avatar: user.avatar?.url,
     },
     tokens: { refresh: refreshToken, access: accessToken },
   });
