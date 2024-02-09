@@ -134,7 +134,7 @@ export const signIn: RequestHandler = async (req, res) => {
   const payload = { id: user._id };
 
   const accessToken = jwt.sign(payload, JWT_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "1m",
   });
   const refreshToken = jwt.sign(payload, JWT_SECRET);
 
@@ -191,7 +191,7 @@ export const grantAccessToken: RequestHandler = async (req, res) => {
   }
 
   const newAccessToken = jwt.sign({ id: user._id }, JWT_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "1m",
   });
   const newRefreshToken = jwt.sign({ id: user._id }, JWT_SECRET);
 
@@ -201,6 +201,13 @@ export const grantAccessToken: RequestHandler = async (req, res) => {
   await user.save();
 
   res.json({
+    profile: {
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      verified: user.verified,
+      avatar: user.avatar?.url,
+    },
     tokens: { refresh: newRefreshToken, access: newAccessToken },
   });
 };
