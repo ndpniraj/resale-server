@@ -122,6 +122,10 @@ io.on("connection", (socket) => {
       socket.to(peerId).emit("chat:seen", { conversationId, messageId });
     }
   );
+
+  socket.on("chat:typing", (typingData: { to: string; active: boolean }) => {
+    socket.to(typingData.to).emit("chat:typing", { typing: typingData.active });
+  });
 });
 
 // this is how you can upload files

@@ -7,6 +7,7 @@ import {
   getProductDetail,
   getProductsByCategory,
   listNewProduct,
+  searchProducts,
   updateProduct,
 } from "src/controllers/product";
 import { isAuth } from "src/middleware/auth";
@@ -37,5 +38,6 @@ productRouter.get("/detail/:id", getProductDetail);
 productRouter.get("/by-category/:category", getProductsByCategory);
 productRouter.get("/latest", getLatestProducts);
 productRouter.get("/listings", isAuth, getListings);
+productRouter.get("/search", isAuth, searchProducts);
 
 export default productRouter;

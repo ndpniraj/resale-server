@@ -1,3 +1,28 @@
+## TS Config `tsconfig.json`
+
+```
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2016",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["./src/*"],
+      "routes/*": ["./src/routes/*"],
+      "controllers/*": ["./src/controllers/*"]
+    }
+  }
+}
+```
+
 ## Auth Routes
 
 ```
@@ -27,6 +52,14 @@ authRouter.post("/reset-pass");
 7. Send verification link with token to register email.
 8. Send message back to check email inbox.
 
+## RegEx For Email & Password
+
+```
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const passwordRegex =
+  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])[a-zA-Z\d!@#\$%\^&\*]+$/;
+```
+
 - `/verify`
 
 1. Read incoming data like: id and token
@@ -51,7 +84,7 @@ authRouter.post("/reset-pass");
 
 1. Read authorization header
 2. See if we have the token.
-3. Send error if user not.
+3. Send error if there is no token.
 4. Verify the token (we have to use jwt.verify).
 5. Take out the user id from token (we will have it as payload).
 6. Check if we have the user with this id.
@@ -62,9 +95,11 @@ authRouter.post("/reset-pass");
 
 - `/verify-token`
 
-1. check if user is authenticated or not
-2. remove previous token if any
-3. create/store new token and send response back
+1. Check if user is authenticated or not
+2. Remove previous token if any
+3. Create/store new token and
+4. Send link inside users email
+5. Send response back
 
 - `/refresh-token`
 
@@ -126,6 +161,46 @@ authRouter.post("/reset-pass");
 5. If yes the remove the old avatar.
 6. Upload new avatar and update user.
 7. Send response back.
+
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style/index.css" />
+    <title>Reset Password - Smart Cycle Market</title>
+  </head>
+  <body>
+    <div class="container">
+      <p id="message">Please wait, we are verifying your account</p>
+      <form id="form">
+        <div>
+          <h2>Confirm Password</h2>
+          <div id="notification" class="notification-container"></div>
+          <div class="form-group">
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password" />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm New Password:</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+            />
+          </div>
+          <button id="submit" type="submit">Update Password</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="js/reset-pass.js"></script>
+  </body>
+</html>
+
+```
 
 # Product
 
